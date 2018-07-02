@@ -38,7 +38,13 @@ class TestList: public TestBase, public cocos2d::extension::TableViewDataSource,
 public:
     TestList();
     
+    // 添加测试项
+    void addTest(const std::string &name, std::function<TestBase *()> callback);
+    // 重载父类的方法
     virtual void runThisTest() override;
+    
+private:
+    std::vector< std::function<TestBase *()> > _testCallbacks;
     
 };
 
