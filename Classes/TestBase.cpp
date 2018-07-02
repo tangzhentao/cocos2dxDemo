@@ -6,3 +6,9 @@
 //
 
 #include "TestBase.h"
+
+
+TestBase::TestBase(): _parentTest(nullptr), _isTestList(false)
+{
+    
+}

@@ -6,3 +6,18 @@
 //
 
 #include "TestController.h"
+
+static TestController *s_testController = nullptr;
+TestController * TestController::getInstance()
+{
+    if (nullptr == s_testController)
+    {
+        s_testController = new(std::nothrow) TestController;
+    }
+    return s_testController;
+}
+
+TestController::TestController()
+{
+    
+}

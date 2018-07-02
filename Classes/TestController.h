@@ -10,13 +10,16 @@
 
 #include <stdio.h>
 
-class TestController_
+/*
+ 使用静态成员函数和私有构造函数来实现单例
+ */
+class TestController
 {
 public:
-	<#member functions#>
+    static TestController *getInstance();
 
 private:
-	<#instance variables#>
+    TestController();
 };
 
 #endif /* TestController_h */
