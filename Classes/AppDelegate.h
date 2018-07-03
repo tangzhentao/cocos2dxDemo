@@ -27,6 +27,8 @@
 
 #include "cocos2d.h"
 
+class TestController;
+
 /**
 @brief    The cocos2d Application.
 
@@ -58,6 +60,9 @@ public:
     @param  the pointer of the application
     */
     virtual void applicationWillEnterForeground();
+    
+private:
+    TestController *_testController;
 };
 
 #endif // _APP_DELEGATE_H_

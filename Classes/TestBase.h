@@ -31,7 +31,7 @@ protected:
 };
 
 /*
- 测试列表
+ 测试列表类
  */
 class TestList: public TestBase, public cocos2d::extension::TableViewDataSource, public cocos2d::extension::TableViewDelegate
 {
@@ -43,9 +43,18 @@ public:
     // 重载父类的方法
     virtual void runThisTest() override;
     
+    // TableViewDataSource
+    virtual ssize_t numberOfCellsInTableView(cocos2d::extension::TableView *table) override;
+    virtual cocos2d::extension::TableViewCell *tableCellAtIndex(cocos2d::extension::TableView *table, ssize_t idx) override;
+    virtual cocos2d::Size tableCellSizeForIndex(cocos2d::extension::TableView* table, ssize_t idx) override;
+    
+    // TableViewDelegate
+    virtual void tableCellTouched(cocos2d::extension::TableView* table, cocos2d::extension::TableViewCell* cell) override;
+    
 private:
     std::vector< std::function<TestBase *()> > _testCallbacks;
     
 };
+
 
 #endif /* BaseTest_h */

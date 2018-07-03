@@ -6,6 +6,18 @@
 //
 
 #include "TestController.h"
+#include "TestBase.h"
+/*
+ 根测试类
+ */
+class RootTest: public TestList
+{
+public:
+    RootTest()
+    {
+        addTest("hello world", []() {return new TestList;} );
+    }
+};
 
 static TestController *s_testController = nullptr;
 TestController * TestController::getInstance()
@@ -19,5 +31,14 @@ TestController * TestController::getInstance()
 
 TestController::TestController()
 {
+    _rootTestList = new(std::nothrow) RootTest;
     
+    _rootTestList->runThisTest();
 }
+
+TestController::~TestController()
+{
+    _rootTestList->release();
+    _rootTestList = nullptr;
+}
+
