@@ -20,8 +20,11 @@ class TestBase: public cocos2d::Ref
 public:
     virtual void runThisTest() {}
     
+    // 返回到上一级
+    void backsUpOneLevel();
+    
     bool isTestList() {return _isTestList;}
-
+    
 protected:
     TestBase();
     std::string _testName;
@@ -42,6 +45,8 @@ public:
     void addTest(const std::string &name, std::function<TestBase *()> callback);
     // 重载父类的方法
     virtual void runThisTest() override;
+    void startAutoTest();
+
     
     // TableViewDataSource
     virtual ssize_t numberOfCellsInTableView(cocos2d::extension::TableView *table) override;
@@ -53,6 +58,8 @@ public:
     
 private:
     std::vector< std::function<TestBase *()> > _testCallbacks;
+    
+    cocos2d::Scene *_scene;
     
 };
 

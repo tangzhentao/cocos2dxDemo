@@ -6,6 +6,7 @@
 //
 
 #include "TestBase.h"
+#include "VisibleRect.h"
 
 USING_NS_CC;
 
@@ -17,6 +18,14 @@ USING_NS_CC_EXT;
 TestBase::TestBase(): _parentTest(nullptr), _isTestList(false)
 {
     
+}
+
+void TestBase::backsUpOneLevel()
+{
+    if (_parentTest) {
+        _parentTest->runThisTest();
+        this->release();
+    }
 }
 
 /* TestCustomTableView */
@@ -107,7 +116,7 @@ void TestList::runThisTest()
     auto size = director->getVisibleSize();
     
     // 创建一个场景
-    auto scene = Scene::create();
+    _scene = Scene::create();
     
     // 创建tableview
     auto tableSize = Size(400, size.height - 20);
@@ -120,11 +129,52 @@ void TestList::runThisTest()
     table->setVerticalFillOrder(TableView::VerticalFillOrder::TOP_DOWN); // 好像是数据填充顺序：从上往下
     table->setDelegate(this);
     // tableview添加到场景中
-    scene->addChild(table, 1);
+    _scene->addChild(table, 1);
     // 加载数据
     table->reloadData();
     
-    director->replaceScene(scene);
+    if (_parentTest)
+    {// 存在上一级测试，显示返回按钮
+        
+        // 添加返回上一级按钮
+        TTFConfig ttfConfig("fonts/Marker Felt.ttf", 20 );
+        auto backLabel = Label::createWithTTF(ttfConfig, "back");
+        auto backItem = MenuItemLabel::create( backLabel, std::bind(&TestBase::backsUpOneLevel, this) );
+        auto menu = Menu::createWithItem(backItem);
+        
+        backItem->setPosition(origion.x + size.width - backItem->getContentSize().width/2, origion.y + backItem->getContentSize().height / 2);
+        menu->setPosition(Vec2::ZERO);
+        
+        _scene->addChild(menu, 1);
+    } else
+    {// 没有上一级测试
+        
+        // 添加自动测试按钮和关闭按钮
+        auto closeItem = MenuItemImage::create("CloseNormal.png", "CloseSelected.png", [&](Ref *sender){
+            Director::getInstance()->end();
+            if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS) {
+                exit(0);
+            }
+        });
+        closeItem->setPosition(VisibleRect::right().x - 30, VisibleRect::top().y - 30);
+        
+        auto autoTestLabel = Label::createWithTTF("start auto test", "fonts/Marker Felt.ttf", 20);
+        auto autoTestItem = MenuItemLabel::create(autoTestLabel, std::bind(&TestList::startAutoTest, this));
+        autoTestItem->setPosition(VisibleRect::left().x + autoTestItem->getContentSize().width/2, VisibleRect::bottom().y + autoTestItem->getContentSize().height/2);
+        
+        auto menu = Menu::create(autoTestItem, closeItem, NULL);
+        menu->setPosition(Vec2::ZERO);
+
+        _scene->addChild(menu, 1);
+        
+    }
+    
+    director->replaceScene(_scene);
+}
+
+void TestList::startAutoTest()
+{
+    log("自动测试稍后再写。");
 }
 
 // TableViewDataSource
@@ -161,5 +211,29 @@ Size TestList::tableCellSizeForIndex(cocos2d::extension::TableView *table, ssize
 // TableViewDelegate
 void TestList::tableCellTouched(TableView *table,TableViewCell *cell)
 {
+    auto label = (Label *)cell->getChildByTag(TABLE_LABEL_TAG);
     
+    auto cellPosition = cell->getPosition();
+    auto cellSize = cell->getContentSize();
+
+    auto labelPosition = label->getPosition();
+    auto labelSize = label->getContentSize();
+
+    log("cell: [(%f, %f), (%f, %f)]", cellPosition.x, cellPosition.y, cellSize.width, cellSize.height);
+    log("label: [(%f, %f), (%f, %f)]", labelPosition.x, labelPosition.y, labelSize.width, labelSize.height);
+    
+    auto director = Director::getInstance();
+    auto origin = director->getVisibleOrigin();
+    auto size = director->getVisibleSize();
+
+    auto sizeWin = director->getWinSize();
+    
+    log("visible: [(%f, %f), (%f, %f)]", origin.x, origin.y, size.width, size.height);
+    log("win: [(%f, %f), (%f, %f)]", origin.x, origin.y, sizeWin.width, sizeWin.height);
+    
+    auto scenOrigin = _scene->getPosition();
+    auto scenSize = _scene->getContentSize();
+    log("scene: [(%f, %f), (%f, %f)]", scenOrigin.x, scenOrigin.y, scenSize.width, scenSize.height);
+
+
 }
