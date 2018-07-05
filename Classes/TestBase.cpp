@@ -234,6 +234,56 @@ void TestList::tableCellTouched(TableView *table,TableViewCell *cell)
     auto scenOrigin = _scene->getPosition();
     auto scenSize = _scene->getContentSize();
     log("scene: [(%f, %f), (%f, %f)]", scenOrigin.x, scenOrigin.y, scenSize.width, scenSize.height);
+    
+    ssize_t index = cell->getIdx();
+    auto callback = _testCallbacks[index];
+    if (callback) {
+        auto test = callback();
+        if (test->getChildTestCount() > 0) {
+            // 设置标题 省略
+            
+            test->runThisTest();
+        }
+    }
+    
 
+
+}
+
+/*
+ TestCase类
+ */
+TestCase::TestCase(): _testSuite(nullptr)
+{
+    // 添加菜单
+    TTFConfig ttfconfig("fonts/arial.ttf", 20.0f);
+    auto previousLabel = Label::createWithTTF(ttfconfig, "previous");
+    auto restartLabel = Label::createWithTTF(ttfconfig, "restart");
+    auto nextLabel = Label::createWithTTF(ttfconfig, "next");
+    
+    auto previousItem = MenuItemLabel::create(previousLabel, std::bind(&TestCase::previous, this));
+    auto restartItem = MenuItemLabel::create(restartLabel, std::bind(&TestCase::restart, this));
+    auto nextItem = MenuItemLabel::create(nextLabel, std::bind(&TestCase::next, this));
+
+    auto restartPositon = Vec2();
+    restartPositon.x = VisibleRect::bottom().x;
+    restartPositon.y = VisibleRect::bottom().y + restartLabel->getContentSize().height / 2;
+    restartItem->setPosition(restartPositon);
+    
+    auto previousPositon = Vec2();
+    auto previousSize = previousItem->getContentSize();
+    float space = 10;
+    previousPositon.x = restartPositon.x - restartItem->getContentSize().width/2 - previousSize.width / 2 - space;
+    previousPositon.y = restartPositon.y;
+    
+    auto nextPositon = Vec2();
+    auto nextSize = nextItem->getContentSize();
+    nextPositon.x = restartPositon.x + restartItem->getContentSize().width/2 + nextSize.width / 2 + space;
+    nextPositon.y = restartPositon.y;
+    
+    auto menu = Menu::create(previousItem, restartItem, nextItem, NULL);
+    menu->setPosition(Vec2::ZERO);
+    
+    this->addChild(menu, 1);
 
 }

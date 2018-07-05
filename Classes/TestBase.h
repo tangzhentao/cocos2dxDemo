@@ -25,6 +25,8 @@ public:
     
     bool isTestList() {return _isTestList;}
     
+    size_t getChildTestCount() { return _childTestNames.size(); }
+    
 protected:
     TestBase();
     std::string _testName;
@@ -61,6 +63,52 @@ private:
     
     cocos2d::Scene *_scene;
     
+};
+
+class TestSuite;
+
+/*
+ 测试用例
+ */
+class TestCase: public TestBase, public cocos2d::Scene
+{
+public:
+    TestCase();
+    ~TestCase();
+    
+    void setTestSuite(TestSuite *testSuite) {_testSuite = testSuite;}
+    TestSuite *getTestSuite () {return _testSuite;}
+    
+    virtual void previous();
+    virtual void restart();
+    virtual void next();
+    
+private:
+    TestSuite * _testSuite;
+    
+};
+
+/*
+ 测试套件：包含多个测试用例
+ */
+class TestSuite: public TestBase
+{
+public:
+    TestSuite();
+    
+    void addTestCase(std::string &testName, std::function<cocos2d::Scene *()> callback);
+    
+    virtual void previous();
+    virtual void restart();
+    virtual void next();
+    
+    int getCurrentIndex() { return 0; }
+    
+    virtual void runThisTest() override;
+    
+private:
+    int _currentIndex;
+
 };
 
 
