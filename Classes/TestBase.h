@@ -70,11 +70,14 @@ class TestSuite;
 /*
  测试用例
  */
-class TestCase: public TestBase, public cocos2d::Scene
+class TestCase: public cocos2d::Scene
 {
 public:
     TestCase();
     ~TestCase();
+    
+    virtual bool init() override;
+    virtual void onEnter() override;
     
     void setTestSuite(TestSuite *testSuite) {_testSuite = testSuite;}
     TestSuite *getTestSuite () {return _testSuite;}
@@ -96,20 +99,23 @@ class TestSuite: public TestBase
 public:
     TestSuite();
     
-    void addTestCase(std::string &testName, std::function<cocos2d::Scene *()> callback);
+    void addTestCase(const std::string &testName, std::function<cocos2d::Scene *()> callback);
     
     virtual void previous();
     virtual void restart();
     virtual void next();
     
-    int getCurrentIndex() { return 0; }
+    int getCurrentIndex() { return _currentIndex; }
     
     virtual void runThisTest() override;
     
 private:
     int _currentIndex;
-
+//    std::vector< std::function<TestCase *()> > _testCallbacks;
+    std::vector<std::function<cocos2d::Scene*()>> _testCallbacks;
 };
+
+#define DEFINE_TEST_SUITE(__className__) class __className__: public TestSuite {public: __className__();}
 
 
 #endif /* BaseTest_h */

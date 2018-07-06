@@ -21,6 +21,7 @@
 		2400BFEF20EC5844004E68BB /* TestBase.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 24A6898420E8ECA4006AB675 /* TestBase.cpp */; };
 		2400BFF220EC772A004E68BB /* VisibleRect.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2400BFF120EC772A004E68BB /* VisibleRect.cpp */; };
 		2400BFF320EC772A004E68BB /* VisibleRect.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2400BFF120EC772A004E68BB /* VisibleRect.cpp */; };
+		247E3DC920EF0C1200E4B19D /* ActionsTest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 247E3DC720EF0C1200E4B19D /* ActionsTest.cpp */; };
 		24A6897F20E8BD4E006AB675 /* TestController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 24A6897D20E8BD4E006AB675 /* TestController.cpp */; };
 		24A6898620E8ECA4006AB675 /* TestBase.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 24A6898420E8ECA4006AB675 /* TestBase.cpp */; };
 		288765A50DF7441C002DB57D /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 288765A40DF7441C002DB57D /* CoreGraphics.framework */; };
@@ -119,6 +120,8 @@
 		1DF5F4DF0D08C38300B7A737 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		2400BFF020EC7729004E68BB /* VisibleRect.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VisibleRect.h; sourceTree = "<group>"; };
 		2400BFF120EC772A004E68BB /* VisibleRect.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = VisibleRect.cpp; sourceTree = "<group>"; };
+		247E3DC720EF0C1200E4B19D /* ActionsTest.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ActionsTest.cpp; sourceTree = "<group>"; };
+		247E3DC820EF0C1200E4B19D /* ActionsTest.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ActionsTest.h; sourceTree = "<group>"; };
 		24A6897D20E8BD4E006AB675 /* TestController.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = TestController.cpp; sourceTree = "<group>"; };
 		24A6897E20E8BD4E006AB675 /* TestController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TestController.h; sourceTree = "<group>"; };
 		24A6898420E8ECA4006AB675 /* TestBase.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = TestBase.cpp; sourceTree = "<group>"; };
@@ -236,6 +239,15 @@
 			path = ios;
 			sourceTree = "<group>";
 		};
+		247E3DC620EF0BE900E4B19D /* ActionsTest */ = {
+			isa = PBXGroup;
+			children = (
+				247E3DC720EF0C1200E4B19D /* ActionsTest.cpp */,
+				247E3DC820EF0C1200E4B19D /* ActionsTest.h */,
+			);
+			path = ActionsTest;
+			sourceTree = "<group>";
+		};
 		29B97314FDCFA39411CA2CEA /* CustomTemplate */ = {
 			isa = PBXGroup;
 			children = (
@@ -301,6 +313,7 @@
 				24A6897E20E8BD4E006AB675 /* TestController.h */,
 				24A6898420E8ECA4006AB675 /* TestBase.cpp */,
 				24A6898520E8ECA4006AB675 /* TestBase.h */,
+				247E3DC620EF0BE900E4B19D /* ActionsTest */,
 				2400BFF120EC772A004E68BB /* VisibleRect.cpp */,
 				2400BFF020EC7729004E68BB /* VisibleRect.h */,
 			);
@@ -462,6 +475,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				1AF87B781F6F77F7007BE51C /* AppController.mm in Sources */,
+				247E3DC920EF0C1200E4B19D /* ActionsTest.cpp in Sources */,
 				1AF87B8B1F6F782A007BE51C /* RootViewController.mm in Sources */,
 				46880B8819C43A87006E1F66 /* AppDelegate.cpp in Sources */,
 				1AF87B8A1F6F7822007BE51C /* main.m in Sources */,

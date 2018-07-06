@@ -245,9 +245,6 @@ void TestList::tableCellTouched(TableView *table,TableViewCell *cell)
             test->runThisTest();
         }
     }
-    
-
-
 }
 
 /*
@@ -255,35 +252,112 @@ void TestList::tableCellTouched(TableView *table,TableViewCell *cell)
  */
 TestCase::TestCase(): _testSuite(nullptr)
 {
-    // 添加菜单
-    TTFConfig ttfconfig("fonts/arial.ttf", 20.0f);
-    auto previousLabel = Label::createWithTTF(ttfconfig, "previous");
-    auto restartLabel = Label::createWithTTF(ttfconfig, "restart");
-    auto nextLabel = Label::createWithTTF(ttfconfig, "next");
-    
-    auto previousItem = MenuItemLabel::create(previousLabel, std::bind(&TestCase::previous, this));
-    auto restartItem = MenuItemLabel::create(restartLabel, std::bind(&TestCase::restart, this));
-    auto nextItem = MenuItemLabel::create(nextLabel, std::bind(&TestCase::next, this));
+    log("TestCase::TestCase()");
+}
 
-    auto restartPositon = Vec2();
-    restartPositon.x = VisibleRect::bottom().x;
-    restartPositon.y = VisibleRect::bottom().y + restartLabel->getContentSize().height / 2;
-    restartItem->setPosition(restartPositon);
-    
-    auto previousPositon = Vec2();
-    auto previousSize = previousItem->getContentSize();
-    float space = 10;
-    previousPositon.x = restartPositon.x - restartItem->getContentSize().width/2 - previousSize.width / 2 - space;
-    previousPositon.y = restartPositon.y;
-    
-    auto nextPositon = Vec2();
-    auto nextSize = nextItem->getContentSize();
-    nextPositon.x = restartPositon.x + restartItem->getContentSize().width/2 + nextSize.width / 2 + space;
-    nextPositon.y = restartPositon.y;
-    
-    auto menu = Menu::create(previousItem, restartItem, nextItem, NULL);
-    menu->setPosition(Vec2::ZERO);
-    
-    this->addChild(menu, 1);
+TestCase::~TestCase()
+{
+    log("TestCase::~TestCase()");
+}
 
+bool TestCase::init()
+{
+    if (Scene::init())
+    {
+        // 添加菜单
+        TTFConfig ttfconfig("fonts/arial.ttf", 20.0f);
+        auto previousLabel = Label::createWithTTF(ttfconfig, "previous");
+        auto restartLabel = Label::createWithTTF(ttfconfig, "restart");
+        auto nextLabel = Label::createWithTTF(ttfconfig, "next");
+        
+        auto previousItem = MenuItemLabel::create(previousLabel, std::bind(&TestCase::previous, this));
+        auto restartItem = MenuItemLabel::create(restartLabel, std::bind(&TestCase::restart, this));
+        auto nextItem = MenuItemLabel::create(nextLabel, std::bind(&TestCase::next, this));
+        
+        auto restartPositon = Vec2();
+        restartPositon.x = VisibleRect::bottom().x;
+        restartPositon.y = VisibleRect::bottom().y + restartLabel->getContentSize().height / 2;
+        restartItem->setPosition(restartPositon);
+        
+        auto previousPositon = Vec2();
+        auto previousSize = previousItem->getContentSize();
+        float space = 10;
+        previousPositon.x = restartPositon.x - restartItem->getContentSize().width/2 - previousSize.width / 2 - space;
+        previousPositon.y = restartPositon.y;
+        
+        auto nextPositon = Vec2();
+        auto nextSize = nextItem->getContentSize();
+        nextPositon.x = restartPositon.x + restartItem->getContentSize().width/2 + nextSize.width / 2 + space;
+        nextPositon.y = restartPositon.y;
+        
+        auto menu = Menu::create(previousItem, restartItem, nextItem, NULL);
+        menu->setPosition(Vec2::ZERO);
+        
+        this->addChild(menu, 1);
+        
+        return true;
+    }
+    
+    return false;
+}
+
+void TestCase::onEnter()
+{
+    Scene::onEnter();
+}
+
+void TestCase::previous()
+{
+    log("TestCase::previou()");
+}
+
+void TestCase::restart()
+{
+    log("TestCase::restart()");
+}
+
+void TestCase::next()
+{
+    log("TestCase::next()");
+}
+
+/*
+ 测试套件类
+ */
+TestSuite::TestSuite(): _currentIndex(0)
+{
+    
+}
+
+void TestSuite::addTestCase(const std::string &testName, std::function<cocos2d::Scene *()> callback)
+{
+    if (!testName.empty() && callback) {
+        _childTestNames.emplace_back(testName);
+        _testCallbacks.emplace_back(callback);
+    }
+}
+
+void TestSuite::runThisTest()
+{
+    if (!_childTestNames.empty()) {
+        auto testCase = _testCallbacks[_currentIndex]();
+        
+        auto director = Director::getInstance();
+        director->replaceScene(testCase);
+    }
+}
+
+void TestSuite::previous()
+{
+    log("TestSuite::previou()");
+}
+
+void TestSuite::restart()
+{
+    log("TestSuite::restart()");
+}
+
+void TestSuite::next()
+{
+    log("TestSuite::next()");
 }

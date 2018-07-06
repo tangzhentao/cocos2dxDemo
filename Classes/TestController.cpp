@@ -7,6 +7,7 @@
 
 #include "TestController.h"
 #include "TestBase.h"
+#include "ActionsTest.h"
 /*
  根测试类
  */
@@ -15,7 +16,7 @@ class RootTest: public TestList
 public:
     RootTest()
     {
-        addTest("hello world", []() {return new TestList;} );
+        addTest("hello world", []() {return new ActionsTest;} );
     }
 };
 
