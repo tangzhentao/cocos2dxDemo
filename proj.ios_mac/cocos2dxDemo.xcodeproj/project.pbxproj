@@ -22,6 +22,7 @@
 		2400BFF220EC772A004E68BB /* VisibleRect.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2400BFF120EC772A004E68BB /* VisibleRect.cpp */; };
 		2400BFF320EC772A004E68BB /* VisibleRect.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2400BFF120EC772A004E68BB /* VisibleRect.cpp */; };
 		247E3DC920EF0C1200E4B19D /* ActionsTest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 247E3DC720EF0C1200E4B19D /* ActionsTest.cpp */; };
+		248DAD5B20F0A050003E98B6 /* ActionsTest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 247E3DC720EF0C1200E4B19D /* ActionsTest.cpp */; };
 		24A6897F20E8BD4E006AB675 /* TestController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 24A6897D20E8BD4E006AB675 /* TestController.cpp */; };
 		24A6898620E8ECA4006AB675 /* TestBase.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 24A6898420E8ECA4006AB675 /* TestBase.cpp */; };
 		288765A50DF7441C002DB57D /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 288765A40DF7441C002DB57D /* CoreGraphics.framework */; };
@@ -490,6 +491,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				248DAD5B20F0A050003E98B6 /* ActionsTest.cpp in Sources */,
 				46880B8919C43A87006E1F66 /* AppDelegate.cpp in Sources */,
 				2400BFEF20EC5844004E68BB /* TestBase.cpp in Sources */,
 				2400BFF320EC772A004E68BB /* VisibleRect.cpp in Sources */,

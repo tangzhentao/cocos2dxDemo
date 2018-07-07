@@ -75,7 +75,7 @@ class TestCase: public cocos2d::Scene
 public:
     TestCase();
     ~TestCase();
-    
+//    CREATE_FUNC(TestCase)
     virtual bool init() override;
     virtual void onEnter() override;
     

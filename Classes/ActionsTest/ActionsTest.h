@@ -30,10 +30,8 @@ class ActionMove: public ActionsDemo
 {
 public:
     CREATE_FUNC(ActionMove);
+
     virtual void onEnter() override;
-    
-private:
-    std::string _name;
 };
 
 #endif /* ActionsTest_h */

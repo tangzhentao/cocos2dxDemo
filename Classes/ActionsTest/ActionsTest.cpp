@@ -36,12 +36,9 @@ void ActionsDemo::onExit()
 /*
  ActionMove
  */
-ActionMove::ActionMove(): _name("")
-{
-    log("ActionMove::ActionMove()");
-}
 
 void ActionMove::onEnter()
 {
-    
+    TestCase::onEnter();
+    log("ActionMove::onEnter()");
 }

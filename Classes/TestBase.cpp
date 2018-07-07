@@ -7,6 +7,7 @@
 
 #include "TestBase.h"
 #include "VisibleRect.h"
+#include "ActionsTest.h"
 
 USING_NS_CC;
 
@@ -118,6 +119,9 @@ void TestList::runThisTest()
     // 创建一个场景
     _scene = Scene::create();
     
+    auto bgLayer = LayerColor::create(Color4B::GRAY);
+    _scene->addChild(bgLayer, -1);
+    
     // 创建tableview
     auto tableSize = Size(400, size.height - 20);
     auto table = TestCustomTableView::create(this, Size(400, size.height - 20));
@@ -211,6 +215,11 @@ Size TestList::tableCellSizeForIndex(cocos2d::extension::TableView *table, ssize
 // TableViewDelegate
 void TestList::tableCellTouched(TableView *table,TableViewCell *cell)
 {
+//    auto test = TestCase::create();
+//    
+//    Director::getInstance()->replaceScene(test);
+//    return;
+    
     auto label = (Label *)cell->getChildByTag(TABLE_LABEL_TAG);
     
     auto cellPosition = cell->getPosition();
@@ -264,8 +273,17 @@ bool TestCase::init()
 {
     if (Scene::init())
     {
+        // 背景
+        auto bg = LayerColor::create(Color4B::GREEN);
+        addChild(bg, 999);
         // 添加菜单
         TTFConfig ttfconfig("fonts/arial.ttf", 20.0f);
+        
+        //
+        auto label = Label::createWithTTF(ttfconfig, "const std::string &text");
+        label->setPosition(Vec2(100, 100));
+        addChild(label, 999);
+        
         auto previousLabel = Label::createWithTTF(ttfconfig, "previous");
         auto restartLabel = Label::createWithTTF(ttfconfig, "restart");
         auto nextLabel = Label::createWithTTF(ttfconfig, "next");
@@ -293,7 +311,7 @@ bool TestCase::init()
         auto menu = Menu::create(previousItem, restartItem, nextItem, NULL);
         menu->setPosition(Vec2::ZERO);
         
-        this->addChild(menu, 1);
+        addChild(menu, 999);
         
         return true;
     }
