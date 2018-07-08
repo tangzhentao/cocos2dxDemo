@@ -273,45 +273,60 @@ bool TestCase::init()
 {
     if (Scene::init())
     {
-        // 背景
-        auto bg = LayerColor::create(Color4B::GREEN);
-        addChild(bg, 999);
+        // 添加标题和子标题
+        TTFConfig ttfconfig("fonts/arial.ttf", 26.0f);
+
+        _titleLabel = Label::createWithTTF(ttfconfig, title());
+        _titleLabel->setPosition(VisibleRect::center().x, VisibleRect::top().y - 30);
+        addChild(_titleLabel, 1);
+        
+        ttfconfig.fontSize = 16;
+        _subtitleLabel = Label::createWithTTF(ttfconfig, subtitle());
+        _subtitleLabel->setPosition(VisibleRect::center().x, VisibleRect::top().y - 60);
+        addChild(_subtitleLabel, 1);
+
+
         // 添加菜单
-        TTFConfig ttfconfig("fonts/arial.ttf", 20.0f);
-        
-        //
-        auto label = Label::createWithTTF(ttfconfig, "const std::string &text");
-        label->setPosition(Vec2(100, 100));
-        addChild(label, 999);
-        
+        ttfconfig.fontSize = 20;
         auto previousLabel = Label::createWithTTF(ttfconfig, "previous");
         auto restartLabel = Label::createWithTTF(ttfconfig, "restart");
         auto nextLabel = Label::createWithTTF(ttfconfig, "next");
-        
-        auto previousItem = MenuItemLabel::create(previousLabel, std::bind(&TestCase::previous, this));
-        auto restartItem = MenuItemLabel::create(restartLabel, std::bind(&TestCase::restart, this));
-        auto nextItem = MenuItemLabel::create(nextLabel, std::bind(&TestCase::next, this));
+        auto backLabel = Label::createWithTTF(ttfconfig, "back");
+
+        _previousItem = MenuItemLabel::create(previousLabel, std::bind(&TestCase::previousCallback, this));
+        _restartItem = MenuItemLabel::create(restartLabel, std::bind(&TestCase::restartCallback, this));
+        _nextItem = MenuItemLabel::create(nextLabel, std::bind(&TestCase::nextCallback, this));
+        auto backItem = MenuItemLabel::create(backLabel, std::bind(&TestCase::backCallback, this));
+
         
         auto restartPositon = Vec2();
         restartPositon.x = VisibleRect::bottom().x;
         restartPositon.y = VisibleRect::bottom().y + restartLabel->getContentSize().height / 2;
-        restartItem->setPosition(restartPositon);
+        _restartItem->setPosition(restartPositon);
         
         auto previousPositon = Vec2();
-        auto previousSize = previousItem->getContentSize();
+        auto previousSize = _previousItem->getContentSize();
         float space = 10;
-        previousPositon.x = restartPositon.x - restartItem->getContentSize().width/2 - previousSize.width / 2 - space;
+        previousPositon.x = restartPositon.x - _restartItem->getContentSize().width/2 - previousSize.width / 2 - space;
         previousPositon.y = restartPositon.y;
-        
+        _previousItem->setPosition(previousPositon);
+
         auto nextPositon = Vec2();
-        auto nextSize = nextItem->getContentSize();
-        nextPositon.x = restartPositon.x + restartItem->getContentSize().width/2 + nextSize.width / 2 + space;
+        auto nextSize = _nextItem->getContentSize();
+        nextPositon.x = restartPositon.x + _restartItem->getContentSize().width/2 + nextSize.width / 2 + space;
         nextPositon.y = restartPositon.y;
+        _nextItem->setPosition(nextPositon);
         
-        auto menu = Menu::create(previousItem, restartItem, nextItem, NULL);
+        auto backPositon = Vec2();
+        auto backSize = backItem->getContentSize();
+        backPositon.x = VisibleRect::right().x - backSize.width;
+        backPositon.y = VisibleRect::bottom().y + backSize.height / 2;
+        backItem->setPosition(backPositon);
+
+        auto menu = Menu::create(_previousItem, _restartItem, _nextItem, backItem, NULL);
         menu->setPosition(Vec2::ZERO);
         
-        addChild(menu, 999);
+        addChild(menu, 1);
         
         return true;
     }
@@ -324,19 +339,24 @@ void TestCase::onEnter()
     Scene::onEnter();
 }
 
-void TestCase::previous()
+void TestCase::previousCallback()
 {
-    log("TestCase::previou()");
+    log("TestCase::previousCallback()");
 }
 
-void TestCase::restart()
+void TestCase::restartCallback()
 {
-    log("TestCase::restart()");
+    log("TestCase::restartCallback()");
 }
 
-void TestCase::next()
+void TestCase::nextCallback()
 {
-    log("TestCase::next()");
+    log("TestCase::nextCallback()");
+}
+
+void TestCase::backCallback()
+{
+    log("TestCase::backCallback()");
 }
 
 /*

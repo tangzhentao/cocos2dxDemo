@@ -21,6 +21,10 @@ ActionsTest::ActionsTest()
 /*
  ActionsDemo
  */
+std::string ActionsDemo::title() const
+{
+    return "action tests";
+}
 void ActionsDemo::onEnter()
 {
     TestCase::onEnter();
@@ -36,6 +40,10 @@ void ActionsDemo::onExit()
 /*
  ActionMove
  */
+std::string ActionMove::subtitle() const
+{
+    return "move to/move by";
+}
 
 void ActionMove::onEnter()
 {

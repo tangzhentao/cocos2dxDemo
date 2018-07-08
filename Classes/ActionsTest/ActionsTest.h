@@ -21,6 +21,7 @@ protected:
     cocos2d::Sprite*    _kathia;
     
 public:
+    virtual std::string title() const override;
     virtual void onEnter() override;
     virtual void onExit() override;
 
@@ -30,6 +31,8 @@ class ActionMove: public ActionsDemo
 {
 public:
     CREATE_FUNC(ActionMove);
+
+    virtual std::string subtitle() const override;
 
     virtual void onEnter() override;
 };

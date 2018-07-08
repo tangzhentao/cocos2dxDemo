@@ -75,19 +75,36 @@ class TestCase: public cocos2d::Scene
 public:
     TestCase();
     ~TestCase();
-//    CREATE_FUNC(TestCase)
     virtual bool init() override;
     virtual void onEnter() override;
     
     void setTestSuite(TestSuite *testSuite) {_testSuite = testSuite;}
     TestSuite *getTestSuite () {return _testSuite;}
     
-    virtual void previous();
-    virtual void restart();
-    virtual void next();
+    void setTestCaseName(const std::string &name) { _testCaseName = name; }
+    std::string getTestCaseName() const { return _testCaseName; }
+    
+    virtual std::string title() const { return ""; }
+    virtual std::string subtitle() const { return ""; }
+
+    virtual void previousCallback();
+    virtual void restartCallback();
+    virtual void nextCallback();
+    virtual void backCallback();
+
+    
+private:
+    cocos2d::Label *_titleLabel;
+    cocos2d::Label *_subtitleLabel;
+    
+    cocos2d::MenuItem *_previousItem;
+    cocos2d::MenuItem *_restartItem;
+    cocos2d::MenuItem *_nextItem;
+
     
 private:
     TestSuite * _testSuite;
+    std::string _testCaseName;
     
 };
 
