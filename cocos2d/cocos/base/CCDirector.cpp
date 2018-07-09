@@ -1548,5 +1548,32 @@ void Director::setAnimationInterval(float interval, SetIntervalReason reason)
     }
 }
 
+
+Scene * Director::getPreviousScene()
+{
+    unsigned int c = _scenesStack.size();
+    if (c <= 1) return NULL;
+    return (Scene*)_scenesStack.at(c - 2);
+}
+void Director::popSceneWithTransition(Scene * trans)
+{
+    log("popSceneWithTransition+++++++++++++++++++++++++++++++stack size = %d",_scenesStack.size());
+    CCASSERT(_runningScene != NULL, "running scene should not null");
+    _scenesStack.popBack();
+    unsigned int c = _scenesStack.size();
+    
+    if (c == 0) {
+        end();
+    }
+    else {
+        _sendCleanupToScene = true;
+        //以下2句原来是个人认为应该将弹出当前场景后，将前一个已被包装在过渡场景中的previuousScene也弹出，然后压入包装好的TransitionScene
+        //后来仔细查看了源码，发现其实没有这2句，也是可以正常工作的
+        //_scenesStack.popBack();
+        //_scenesStack.pushBack(trans);
+        _nextScene = trans; // (CCScene*)m_pobScenesStack->objectAtIndex(c - 1);
+    }
+}
+
 NS_CC_END
 

@@ -8,6 +8,8 @@
 #include "TestController.h"
 #include "TestBase.h"
 #include "ActionsTest.h"
+#include "WeiXinLoginTests.h"
+
 /*
  根测试类
  */
@@ -17,6 +19,8 @@ public:
     RootTest()
     {
         addTest("hello world", []() {return new ActionsTest;} );
+        addTest("wei xin", []() {return new WeiXinLoginTests;} );
+
     }
 };
 

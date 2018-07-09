@@ -8,6 +8,7 @@
 #include "TestBase.h"
 #include "VisibleRect.h"
 #include "ActionsTest.h"
+#include "HelloWorldScene.h"
 
 USING_NS_CC;
 
@@ -24,7 +25,12 @@ TestBase::TestBase(): _parentTest(nullptr), _isTestList(false)
 void TestBase::backsUpOneLevel()
 {
     if (_parentTest) {
-        _parentTest->runThisTest();
+        auto director = Director::getInstance();
+        auto prescene = director->getPreviousScene();
+        auto transition = TransitionMoveInL::create(1, prescene);
+        director->popSceneWithTransition(transition);
+//        Director::getInstance()->popScene();
+//        _parentTest->runThisTest();
         this->release();
     }
 }
@@ -220,29 +226,29 @@ void TestList::tableCellTouched(TableView *table,TableViewCell *cell)
 //    Director::getInstance()->replaceScene(test);
 //    return;
     
-    auto label = (Label *)cell->getChildByTag(TABLE_LABEL_TAG);
-    
-    auto cellPosition = cell->getPosition();
-    auto cellSize = cell->getContentSize();
-
-    auto labelPosition = label->getPosition();
-    auto labelSize = label->getContentSize();
-
-    log("cell: [(%f, %f), (%f, %f)]", cellPosition.x, cellPosition.y, cellSize.width, cellSize.height);
-    log("label: [(%f, %f), (%f, %f)]", labelPosition.x, labelPosition.y, labelSize.width, labelSize.height);
-    
-    auto director = Director::getInstance();
-    auto origin = director->getVisibleOrigin();
-    auto size = director->getVisibleSize();
-
-    auto sizeWin = director->getWinSize();
-    
-    log("visible: [(%f, %f), (%f, %f)]", origin.x, origin.y, size.width, size.height);
-    log("win: [(%f, %f), (%f, %f)]", origin.x, origin.y, sizeWin.width, sizeWin.height);
-    
-    auto scenOrigin = _scene->getPosition();
-    auto scenSize = _scene->getContentSize();
-    log("scene: [(%f, %f), (%f, %f)]", scenOrigin.x, scenOrigin.y, scenSize.width, scenSize.height);
+//    auto label = (Label *)cell->getChildByTag(TABLE_LABEL_TAG);
+//
+//    auto cellPosition = cell->getPosition();
+//    auto cellSize = cell->getContentSize();
+//
+//    auto labelPosition = label->getPosition();
+//    auto labelSize = label->getContentSize();
+//
+//    log("cell: [(%f, %f), (%f, %f)]", cellPosition.x, cellPosition.y, cellSize.width, cellSize.height);
+//    log("label: [(%f, %f), (%f, %f)]", labelPosition.x, labelPosition.y, labelSize.width, labelSize.height);
+//
+//    auto director = Director::getInstance();
+//    auto origin = director->getVisibleOrigin();
+//    auto size = director->getVisibleSize();
+//
+//    auto sizeWin = director->getWinSize();
+//
+//    log("visible: [(%f, %f), (%f, %f)]", origin.x, origin.y, size.width, size.height);
+//    log("win: [(%f, %f), (%f, %f)]", origin.x, origin.y, sizeWin.width, sizeWin.height);
+//
+//    auto scenOrigin = _scene->getPosition();
+//    auto scenSize = _scene->getContentSize();
+//    log("scene: [(%f, %f), (%f, %f)]", scenOrigin.x, scenOrigin.y, scenSize.width, scenSize.height);
     
     ssize_t index = cell->getIdx();
     auto callback = _testCallbacks[index];
@@ -250,7 +256,7 @@ void TestList::tableCellTouched(TableView *table,TableViewCell *cell)
         auto test = callback();
         if (test->getChildTestCount() > 0) {
             // 设置标题 省略
-            
+            test->setParentTest(this);
             test->runThisTest();
         }
     }
@@ -273,6 +279,10 @@ bool TestCase::init()
 {
     if (Scene::init())
     {
+        // 背景
+        auto bg = LayerColor::create(Color4B::GREEN);
+        addChild(bg, -1);
+        
         // 添加标题和子标题
         TTFConfig ttfconfig("fonts/arial.ttf", 26.0f);
 
@@ -357,6 +367,9 @@ void TestCase::nextCallback()
 void TestCase::backCallback()
 {
     log("TestCase::backCallback()");
+    if (_testSuite) {
+        _testSuite->backsUpOneLevel();
+    }
 }
 
 /*
@@ -378,10 +391,13 @@ void TestSuite::addTestCase(const std::string &testName, std::function<cocos2d::
 void TestSuite::runThisTest()
 {
     if (!_childTestNames.empty()) {
-        auto testCase = _testCallbacks[_currentIndex]();
+        auto scene = _testCallbacks[_currentIndex]();
         
+        auto testCase = dynamic_cast<TestCase *>(scene);
+        testCase->setTestSuite(this);
         auto director = Director::getInstance();
-        director->replaceScene(testCase);
+        auto transition = TransitionMoveInR::create(0.5, testCase);
+        director->pushScene(transition);
     }
 }
 

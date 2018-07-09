@@ -27,6 +27,9 @@ public:
     
     size_t getChildTestCount() { return _childTestNames.size(); }
     
+    void setParentTest(TestBase *parent) { _parentTest = parent; }
+    TestBase *getParentTest() { return _parentTest; }
+    
 protected:
     TestBase();
     std::string _testName;

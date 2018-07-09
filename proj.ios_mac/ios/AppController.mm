@@ -28,6 +28,12 @@
 #import "cocos2d.h"
 #import "AppDelegate.h"
 #import "RootViewController.h"
+#import "WXApi.h"
+#import "WXApiManager.h"
+//#import "SendMsgToWeChatViewController.h"
+
+#define WeiXinAppID wx73c1becbe6140200
+#define WeiXinAppSecret 6883fef81f7d6d37b06caa4e4ec6c604
 
 @implementation AppController
 
@@ -68,6 +74,8 @@ static AppDelegate s_sharedApplication;
         // use this method on ios6
         [window setRootViewController:_viewController];
     }
+    
+    [self registerWeiXin];
 
     [window makeKeyAndVisible];
 
@@ -81,6 +89,18 @@ static AppDelegate s_sharedApplication;
     app->run();
 
     return YES;
+}
+
+- (void)registerWeiXin
+{
+    //向微信注册
+    BOOL result = [WXApi registerApp:@"wx73c1becbe6140200" enableMTA:NO];
+    if (result) {
+        NSLog(@"register wei xin success.");
+    } else
+    {
+        NSLog(@"register wei xin failed.");
+    }
 }
 
 
@@ -121,6 +141,16 @@ static AppDelegate s_sharedApplication;
      Called when the application is about to terminate.
      See also applicationDidEnterBackground:.
      */
+}
+
+- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
+    
+    if ([WXApi handleOpenURL:url delegate:[WXApiManager sharedManager]])
+    {
+        NSLog(@"WXApi handleOpenURL");
+    }
+    
+    return YES;
 }
 
 

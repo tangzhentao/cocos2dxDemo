@@ -582,6 +582,9 @@ public:
      * returns whether or not the Director is in a valid state
      */
     bool isValid() const { return !_invalid; }
+    
+    Scene * getPreviousScene();
+    void popSceneWithTransition(Scene * trans);
 
 protected:
     void reset();
@@ -721,6 +724,7 @@ protected:
 
     // GLView will recreate stats labels to fit visible rect
     friend class GLView;
+
 };
 
 // FIXME: Added for backward compatibility in case
