@@ -32,9 +32,6 @@
 #import "WXApiManager.h"
 //#import "SendMsgToWeChatViewController.h"
 
-#define WeiXinAppID wx73c1becbe6140200
-#define WeiXinAppSecret 6883fef81f7d6d37b06caa4e4ec6c604
-
 @implementation AppController
 
 @synthesize window;
@@ -94,7 +91,7 @@ static AppDelegate s_sharedApplication;
 - (void)registerWeiXin
 {
     //向微信注册
-    BOOL result = [WXApi registerApp:@"wx73c1becbe6140200" enableMTA:NO];
+    BOOL result = [WXApi registerApp:[NSString stringWithUTF8String:WeiXinAppID] enableMTA:NO];
     if (result) {
         NSLog(@"register wei xin success.");
     } else

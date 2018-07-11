@@ -32,8 +32,18 @@
     } else if ([resp isKindOfClass:[SendAuthResp class]])
     {
         SendAuthResp *authResp = (SendAuthResp *)resp;
+        
+        std::string errStr;
+        std::string data;
+        if (authResp.errStr.length > 0) {
+            errStr = [authResp.errStr cStringUsingEncoding:NSUTF8StringEncoding];
+        }
+        if (authResp.code.length > 0) {
+            data = [authResp.code cStringUsingEncoding:NSUTF8StringEncoding];
+        }
+        
         GameWXApiManager *gameManager = GameWXApiManager::getInstance();
-        gameManager->onResp();
+        gameManager->onResp(authResp.errCode, errStr, data);
         
     } else if ([resp isKindOfClass:[AddCardToWXCardPackageResp class]]) {
         if (_delegate

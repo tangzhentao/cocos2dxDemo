@@ -9,6 +9,7 @@
 #include "VisibleRect.h"
 #include "ActionsTest.h"
 #include "HelloWorldScene.h"
+#include "ui/CocosGUI.h"
 
 USING_NS_CC;
 
@@ -127,6 +128,30 @@ void TestList::runThisTest()
     
     auto bgLayer = LayerColor::create(Color4B::GRAY);
     _scene->addChild(bgLayer, -1);
+    
+    auto button = ui::Button::create();
+    button->setTitleText("activity");
+    button->setTitleFontSize(20);
+    button->addTouchEventListener([&](Ref* sender, ui::Widget::TouchEventType type){
+        switch (type)
+        {
+            case ui::Widget::TouchEventType::BEGAN:
+                break;
+            case ui::Widget::TouchEventType::ENDED:
+            {
+                auto mySprite = Sprite::create("ActivityIndicator/ccactivityindicator_1.gif");
+                mySprite->setPosition(VisibleRect::center() );
+                _scene->addChild(mySprite, 2);
+            }
+                break;
+            default:
+                break;
+        }
+    });
+    
+    button->setPosition(VisibleRect::center());
+    
+    _scene->addChild(button, 1);
     
     // 创建tableview
     auto tableSize = Size(400, size.height - 20);
